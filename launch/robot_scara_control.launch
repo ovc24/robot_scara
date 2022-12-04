@@ -1,0 +1,12 @@
+<launch>
+    <rosparam file="$(find robot_scara)/config/scara_control.yaml" command="load" />
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" 
+      output="screen" ns="/robot_scara" args="segundo_joint_position_controller 
+                                              tercer_joint_position_controller
+                                              cuarto_joint_position_controller  
+                                              joint_state_controller --shutdown-timeout 3" />
+    <include file="$(find robot_scara)/launch/spawn_robot_scara.launch" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+        <remap from="/joint_states" to="/robot_scara/joint_states" />
+    </node>
+</launch>
